@@ -1,0 +1,42 @@
+== Symbols list
+- https://smartwebworker.com/ascii-codes/
+
+== Escape sequences
+- https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
+
+move cursor by column and row
+
+[source, c]
+----
+write(STDOUT_FILENO, "\x1b[2;2H", 6);
+----
+
+change cursor?
+
+- https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/admin-guide/vga-softcursor.rst
+- https://unix.stackexchange.com/questions/49485/escape-code-to-change-cursor-shape
+
+== Printing of uint types
+https://stackoverflow.com/questions/29112878/how-do-i-printf-a-uint16-t
+
+----
+#define PRIu8 "hu"
+#define PRId8 "hd"
+#define PRIx8 "hx"
+#define PRIu16 "hu"
+#define PRId16 "hd"
+#define PRIx16 "hx"
+#define PRIu32 "u"
+#define PRId32 "d"
+#define PRIx32 "x"
+#define PRIu64 "llu" // or possibly "lu"
+#define PRId64 "lld" // or possibly "ld"
+#define PRIx64 "llx" // or possibly "lx"
+----
+- https://stackoverflow.com/questions/14358967/printing-the-uint8-t
+
+----
+#include <inttypes.h>
+
+printf("%" PRIu8 "\n", orig[0]);
+----
