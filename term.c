@@ -241,14 +241,21 @@ void term_moveCursor(Term *term, int key)
 void term_parseCommand(Term *term)
 {
     char *p = term->command.buffer;
-    if(*p == 'w') {
-        p++;
-        char *d = term->file_path;
-        while(*(p++)) *(d++) = *p;
-        int len = p - term->command.buffer;
-        term->file_path[len] = '\0';
-        term->command.callee = term_save;
-        term->command.data = (void *)term->file_path;
+    switch(*p) {
+        case 'w': {
+            p++;
+            char *d = term->file_path;
+            while(*(p++)) *(d++) = *p;
+            int len = p - term->command.buffer;
+            term->file_path[len] = '\0';
+            term->command.callee = term_save;
+            term->command.data = (void *)term->file_path;
+            break;
+        }
+        case 'q': {
+            term->command.callee = term_close;
+            break;
+        }
     }
 }
 
@@ -457,7 +464,7 @@ void term_render(Term *term)
         term_setPos(term, term->pos.row, term->pos.col);
         } else if (term->global_mode == MODE_G_COMMAND) {
         if (term->command.called) {
-            term->command.callee(term);
+            if (term->command.callee) term->command.callee(term);
             term_exitCommandMode(term);
         } else  {
             term->command.buffer[term->command.i] = *term->input;
